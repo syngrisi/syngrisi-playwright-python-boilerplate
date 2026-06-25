@@ -31,7 +31,7 @@ jobs:
       - name: Start Syngrisi server
         run: |
           nohup npx -y @syngrisi/syngrisi@latest > /tmp/syngrisi.log 2>&1 &
-          npx -y wait-on http://localhost:3000 --timeout 90000
+          npx -y wait-on http://localhost:3000/v1/app/info --timeout 120000
         env:
           SYNGRISI_AUTH: 'false'
           SYNGRISI_DB_URI: 'mongodb://127.0.0.1:27017/SyngrisiDb'
