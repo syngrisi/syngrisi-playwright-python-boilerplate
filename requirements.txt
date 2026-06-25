@@ -1,0 +1,7 @@
+# Playwright for Python + pytest plugin (provides the `page` fixture).
+playwright>=1.40
+pytest>=7.4
+pytest-playwright>=0.4
+
+# HTTP client used by the bundled Syngrisi core-api client (see ./syngrisi_core_api).
+requests>=2.31
