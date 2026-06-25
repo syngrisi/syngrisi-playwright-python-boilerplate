@@ -27,15 +27,19 @@ jobs:
           pip install -r requirements.txt
       - name: Install Playwright browsers
         run: python -m playwright install --with-deps chromium
+      # Start the Syngrisi server (the `sy` bin = the server) in the background and wait for it.
       - name: Start Syngrisi server
-        run: npx -y @syngrisi/syngrisi@latest start -d
+        run: |
+          nohup npx -y @syngrisi/syngrisi@latest > /tmp/syngrisi.log 2>&1 &
+          npx -y wait-on http://localhost:3000 --timeout 90000
         env:
           SYNGRISI_AUTH: 'false'
           SYNGRISI_DB_URI: 'mongodb://127.0.0.1:27017/SyngrisiDb'
-      - name: Wait for Syngrisi server
-        run: npx -y wait-on http://localhost:3000 --timeout 60000
       - name: Run tests
         run: pytest -q
       - name: Stop Syngrisi server
         if: always()
-        run: npx -y @syngrisi/syngrisi@latest stop
+        run: pkill -f 'server/server.js' || true
+      - name: Syngrisi server log
+        if: failure()
+        run: cat /tmp/syngrisi.log || true
