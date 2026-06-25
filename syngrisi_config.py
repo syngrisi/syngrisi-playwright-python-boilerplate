@@ -1,14 +1,17 @@
 """Syngrisi visual-testing configuration.
 
-Mirrors the JS boilerplate `syngrisi.config.ts`:
+Mirrors the JS boilerplate's ``syngrisi.config.ts``: it carries the server
+``base_url``, an ``api_key`` (empty by default = auth off), the ``project``
+name, the ``branch``, and an auto-generated ``run_name``/``run_ident``.
 
-- ``base_url``  — URL of the Syngrisi server.
-- ``api_key``   — API key for authentication (empty = auth off, the default).
-- ``project``   — name of the project under test (the Syngrisi "app").
-- ``branch``    — version-control branch name.
-- ``run_name`` / ``run_ident`` — unique identifiers for the test run. If not
-  provided via the ``SYNGRISI_RUN_NAME`` / ``SYNGRISI_RUN_IDENT`` env vars they
-  are generated automatically (timestamp + uuid).
+All values can be overridden via environment variables:
+
+- ``SYNGRISI_URL``
+- ``SYNGRISI_API_KEY``
+- ``SYNGRISI_PROJECT``
+- ``SYNGRISI_BRANCH``
+- ``SYNGRISI_RUN_NAME``
+- ``SYNGRISI_RUN_IDENT``
 """
 
 import os
@@ -28,7 +31,7 @@ config = {
     "base_url": os.environ.get("SYNGRISI_URL", "http://localhost:3000/"),
     "api_key": os.environ.get("SYNGRISI_API_KEY", ""),
     "project": os.environ.get("SYNGRISI_PROJECT", "Boilerplate Python"),
-    "branch": "main",
+    "branch": os.environ.get("SYNGRISI_BRANCH", "main"),
     # If the env vars are not set, the values are generated automatically.
     "run_name": os.environ.get("SYNGRISI_RUN_NAME") or _generate_run_name(),
     "run_ident": os.environ.get("SYNGRISI_RUN_IDENT") or _generate_run_ident(),
